@@ -111,12 +111,14 @@ namespace itg
     void GpuParticles::update()
     {
         fbos[1 - currentReadFbo].begin(false);
-        glPushAttrib(GL_ENABLE_BIT);
-        // we set up no camera model and ignore the modelview and projection matrices
+		
+		bool wasBlendEnabled = glIsEnabled(GL_BLEND);
+		glDisable(GL_BLEND);
+		
+		// we set up no camera model and ignore the modelview and projection matrices
         // in the vertex shader, we make a viewport large enought to ensure the shader
         // is executed for each pixel
         glViewport(0, 0, width, height);
-        glDisable(GL_BLEND);
         ofSetColor(255, 255, 255);
         fbos[1 - currentReadFbo].activateAllDrawBuffers();
         
@@ -125,8 +127,9 @@ namespace itg
         setUniforms(updateShader);
         quadMesh.draw();
         updateShader.end();
-        glPopAttrib();
         
+		if (wasBlendEnabled) glEnable(GL_BLEND);
+
         fbos[1 - currentReadFbo].end();
         
         currentReadFbo = 1 - currentReadFbo;
