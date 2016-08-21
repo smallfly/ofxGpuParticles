@@ -69,7 +69,7 @@ namespace itg
         {
             for (int x = 0; x < width; ++x)
             {
-                mesh.addVertex(ofVec3f(200.f * x / (float)width - 100.f, 200.f * y / (float)height - 100.f, -500.f));
+				mesh.addVertex(ofVec3f(x, y, 0.f));
                 mesh.addTexCoord(ofVec2f(x, y));
             }
         }
